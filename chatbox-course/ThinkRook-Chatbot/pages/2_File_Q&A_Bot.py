@@ -5,7 +5,7 @@ import google.generativeai as genai
 
 
 
-st.logo("https://dme2wmiz2suov.cloudfront.net/Institution(8663)/Logo/4216689-ThinkRook_Logo.png", size="large")
+
 
 st.sidebar.title("Bot Settings")
 
@@ -15,7 +15,7 @@ with st.sidebar:
     gemini_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
 
 
-st.title("📝 File Q&A with ThinkRook")
+st.title("📝 File Q&A with Crane Brain")
 st.caption("Chat with your uploaded article or file.")
 
 uploaded_file = st.file_uploader("Upload your article/file here.", type=("pdf"))

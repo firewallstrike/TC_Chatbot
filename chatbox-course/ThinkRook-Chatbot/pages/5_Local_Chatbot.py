@@ -1,5 +1,5 @@
 """
-ThinkRook Ollama Bot with File Upload - A Streamlit chatbot with document analysis
+Crane Brain Ollama Bot with File Upload - A Streamlit chatbot with document analysis
 
 This application creates an interactive chat interface using Streamlit and Ollama 
 (local LLM). Users can upload PDF, DOCX, CSV, or XLSX files and ask questions
@@ -263,9 +263,9 @@ def send_message_to_ollama(ollama_url, model_name, prompt):
 # ============================================================================
 
 # Set up the page configuration
-st.set_page_config(page_title="ThinkRook Ollama Bot", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Crane Brain Ollama Bot", page_icon="🤖", layout="wide")
 
-st.title("ThinkRook Ollama Bot 📄📊")
+st.title("Crane Brain Ollama Bot 📄📊")
 st.caption("Chat with Ollama (Local LLM) and analyze your documents and data files!")
 
 # ============================================================================
@@ -473,4 +473,3 @@ Please answer the user's question based on the document content above. If the qu
             error_message = f"❌ Error: {str(e)}"
             st.session_state.messages.append({"role": "assistant", "content": error_message})
             st.chat_message("assistant").write(error_message)
-    

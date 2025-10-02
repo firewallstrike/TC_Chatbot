@@ -1,5 +1,5 @@
 """
-ThinkRook Gemini Bot - A Streamlit chatbot powered by Google's Gemini AI
+Crane Brain Gemini Bot - A Streamlit chatbot powered by Google's Gemini AI
 
 This application creates an interactive chat interface using Streamlit and Google's 
 Generative AI (Gemini) model. Users can have conversations with the AI assistant, 
@@ -11,7 +11,7 @@ import google.generativeai as genai
 
 # Set up the page title and caption
 
-st.title("ThinkRook Gemini Bot")
+st.title("Crane Brain Gemini Bot")
 st.caption("Hello from Gemini Bot!")
 st.sidebar.title("AI Bot Settings")
 # Initialize the Gemini API selection with the provided key
@@ -19,7 +19,10 @@ with st.sidebar:
     gemeni_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
     model = st.selectbox("Select Your Model", ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"], key="gemini_model")
 
-
+# Configure API credentials and model
+# WARNING: API key should be stored securely (e.g., environment variables or Streamlit secrets)
+# api_key = "AIzaSyBeI7tqJJOJvFMN4gIX87Gx265E8p9TAyY"
+# model_name = "gemini-2.5-flash"
 
 # Initialize the Gemini API with the provided key
 # genai.configure(api_key=api_key)

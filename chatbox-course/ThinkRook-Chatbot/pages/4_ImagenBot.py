@@ -4,7 +4,7 @@ from google.genai import types
 from PIL import Image
 from io import BytesIO
 
-st.logo("https://dme2wmiz2suov.cloudfront.net/Institution(8663)/Logo/4216689-ThinkRook_Logo.png", size="large")
+st.logo("https://dme2wmiz2suov.cloudfront.net/Institution(8663)/Logo/4216689-Crane Brain_Logo.png", size="large")
 
 st.sidebar.title("Bot Settings")
 
@@ -12,8 +12,8 @@ with st.sidebar:
     gemini_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
 
 
-st.title("Create with ThinkRook")
-st.caption("Create attractive images with Gemini on ThinkRook ImagenBot.")
+st.title("Create with Crane Brain")
+st.caption("Create attractive images with Gemini on Crane Brain ImagenBot.")
 
 
 if 'messages' not in st.session_state:
@@ -59,5 +59,5 @@ if prompt := st.chat_input():
             st.download_button(
                 label='Download Image',
                 data=img_bytes,
-                file_name='thinkrook_imagenbot_image.png'
+                file_name='Crane Brain_imagenbot_image.png'
             )

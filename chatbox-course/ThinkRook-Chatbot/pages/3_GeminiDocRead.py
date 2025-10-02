@@ -1,5 +1,5 @@
 """
-ThinkRook Gemini Bot with File Upload - A Streamlit chatbot with document analysis
+Crane Brain Gemini Bot with File Upload - A Streamlit chatbot with document analysis
 
 This application creates an interactive chat interface using Streamlit and Google's 
 Generative AI (Gemini) model. Users can upload PDF, DOCX, CSV, or XLSX files and 
@@ -204,9 +204,9 @@ def read_uploaded_file(uploaded_file):
 # ============================================================================
 
 # Set up the page configuration
-st.set_page_config(page_title="ThinkRook Gemini Bot", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Crane Brain Gemini Bot", page_icon="🤖", layout="wide")
 
-st.title("ThinkRook Gemini Bot 📄📊")
+st.title("Crane Brain Gemini Bot 📄📊")
 st.caption("Chat with Gemini AI and analyze your documents and data files!")
 
 # ============================================================================
