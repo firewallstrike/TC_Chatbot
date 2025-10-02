@@ -4,7 +4,7 @@ from google.genai import types
 from PIL import Image
 from io import BytesIO
 
-st.logo("https://dme2wmiz2suov.cloudfront.net/Institution(8663)/Logo/4216689-Crane Brain_Logo.png", size="large")
+# st.logo("https://dme2wmiz2suov.cloudfront.net/Institution(8663)/Logo/4216689-Crane Brain_Logo.png", size="large")
 
 st.sidebar.title("Bot Settings")
 
