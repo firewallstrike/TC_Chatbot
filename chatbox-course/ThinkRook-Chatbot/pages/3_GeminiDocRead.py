@@ -8,7 +8,7 @@
 # ============================================================================
 
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 import pandas as pd
 import os
 import logging
