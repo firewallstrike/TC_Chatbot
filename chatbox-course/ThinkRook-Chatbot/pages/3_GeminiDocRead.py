@@ -1,10 +1,23 @@
 # ============================================================================
-# Crane Brain Gemini Bot - Improved Version
+# Crane Brain Gemini Bot - Fixed Version (No Dependency Conflicts)
 #
 # HOW TO RUN:
 # 1. Save this code as a Python file (e.g., `app.py`).
 # 2. Install requirements: pip install -r requirements.txt
 # 3. Run: streamlit run app.py
+#
+# REQUIREMENTS.TXT:
+# streamlit
+# google-generativeai==0.8.3
+# langchain-google-genai==2.0.5
+# langchain
+# langchain-community
+# langchain-experimental
+# pandas
+# faiss-cpu
+# pypdf
+# docx2txt
+# openpyxl
 # ============================================================================
 
 import streamlit as st
@@ -34,7 +47,7 @@ class Config:
     SIMILARITY_SEARCH_K = 3
     SUPPORTED_DOCS = ["pdf", "docx"]
     SUPPORTED_DATA = ["csv", "xlsx"]
-    DEFAULT_MODEL = "gemini-2.5-flash"
+    DEFAULT_MODEL = "gemini-2.0-flash-exp"
     TEMP_DIR = "/tmp"
 
 # Setup logging
@@ -272,21 +285,14 @@ def main():
     with st.sidebar:
         st.header("⚙️ Configuration")
         
-        # API Key input (check secrets first)
-        try:
-            if 'GEMINI_API_KEY' in st.secrets:
-                gemini_api_key = st.secrets['GEMINI_API_KEY']
-                st.success("✅ API Key loaded from secrets")
-            else:
-                gemini_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
-        except:
-            # If secrets.toml doesn't exist, just use text input
-            gemini_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
+        # API Key input - always require manual entry
+        gemini_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
+        st.caption("Get your API key from: [aistudio.google.com](https://aistudio.google.com/app/apikey)")
         
         model_name = st.selectbox(
             "Select Your Model", 
-            ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"],
-            index=1,  # Default to gemini-2.5-flash
+            ["gemini-2.0-flash-exp", "gemini-1.5-flash", "gemini-1.5-pro"],
+            index=0,  # Default to gemini-2.0-flash-exp
             key="gemini_model"
         )
         
@@ -347,6 +353,7 @@ def main():
             st.write(f"**File:** {st.session_state.document_name}")
             processor_type = 'RAG (Document)' if st.session_state.file_type in ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'] else 'Pandas Agent (Data)'
             st.write(f"**Processor:** {processor_type}")
+            st.write(f"**Model:** {model_name}")
             st.write(f"**Status:** 🟢 Ready for questions")
         else:
             st.write("**Status:** 🔴 No file loaded")
