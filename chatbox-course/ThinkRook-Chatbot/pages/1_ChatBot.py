@@ -1,38 +1,39 @@
 """
-Crane Brain Gemini Bot - A Streamlit chatbot powered by Google's Gemini AI
+Crane Brain Claude Bot - A Streamlit chatbot powered by Anthropic's Claude AI
 
-This application creates an interactive chat interface using Streamlit and Google's 
-Generative AI (Gemini) model. Users can have conversations with the AI assistant, 
+This application creates an interactive chat interface using Streamlit and Anthropic's 
+Claude model. Users can have conversations with the AI assistant, 
 with full chat history maintained throughout the session.
 """
 
 import streamlit as st
-import google.generativeai as genai
+from anthropic import Anthropic
 
 # Set up the page title and caption
-
-st.title("Crane Brain Gemini Bot")
-st.caption("Hello from Gemini Bot!")
+st.title("Crane Brain Claude Bot")
+st.caption("Hello from Claude!")
 st.sidebar.title("AI Bot Settings")
-# Initialize the Gemini API selection with the provided key
+
+# Initialize the Claude API selection - ALWAYS require API key
 with st.sidebar:
-    gemeni_api_key = st.text_input("Gemini API Key", key="gemini_api_key", type="password")
-    model = st.selectbox("Select Your Model", ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"], key="gemini_model")
-
-# Configure API credentials and model
-# WARNING: API key should be stored securely (e.g., environment variables or Streamlit secrets)
-# api_key = "AIzaSyBeI7tqJJOJvFMN4gIX87Gx265E8p9TAyY"
-# model_name = "gemini-2.5-flash"
-
-# Initialize the Gemini API with the provided key
-# genai.configure(api_key=api_key)
-# Create a GenerativeModel instance with the specified model
-# model = genai.GenerativeModel(model_name)
+    claude_api_key = st.text_input("Anthropic API Key", key="claude_api_key", type="password")
+    st.caption("Get your API key from: [console.anthropic.com](https://console.anthropic.com)")
+    
+    model = st.selectbox(
+        "Select Your Model", 
+        [
+            "claude-sonnet-4-20250514",
+            "claude-opus-4-20250514",
+            "claude-3-5-sonnet-20241022",
+            "claude-3-5-haiku-20241022"
+        ], 
+        key="claude_model"
+    )
 
 # Initialize chat history in session state if it doesn't exist
 # Session state persists data across reruns of the Streamlit app
 if 'messages' not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! How can I assist you today?"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I'm Claude. How can I assist you today?"}]
 
 # Display all previous messages in the chat interface
 for msg in st.session_state.messages:
@@ -42,26 +43,44 @@ for msg in st.session_state.messages:
 # The := operator assigns the input value to 'prompt' and checks if it's not empty
 if prompt := st.chat_input():
 
-    #if no API key
-    if not gemeni_api_key:
-        st.info("Please add your Google API key to continue!")
+    # ALWAYS check for API key - force user to enter it
+    if not claude_api_key:
+        st.info("Please add your Anthropic API key to continue!")
         st.stop()
 
-        # Initialize the Gemini API with the provided key
-    genai.configure(api_key=gemeni_api_key)
-    # Create a GenerativeModel instance with the specified model
-    model = genai.GenerativeModel(model)
+    # Initialize the Anthropic client with the provided key
+    client = Anthropic(api_key=claude_api_key)
+    
     # Add user message to session state
     st.session_state.messages.append({"role": "user", "content": prompt})
     # Display user message in the chat interface
     st.chat_message("user").write(prompt)
 
-    # Create a new chat session with empty history
-    chat = model.start_chat(history=[])
-    # Send the user's message to the Gemini model and get response
-    response = chat.send_message(prompt)
+    # Prepare messages for Claude API (filter out the initial greeting)
+    # Claude API expects only user/assistant messages, not system messages
+    api_messages = [
+        msg for msg in st.session_state.messages 
+        if msg != {"role": "assistant", "content": "Hello! I'm Claude. How can I assist you today?"}
+    ]
+    
+    # Send the conversation to Claude and get response
+    try:
+        response = client.messages.create(
+            model=model,
+            max_tokens=4096,
+            messages=api_messages
+        )
+        
+        # Extract the text from Claude's response
+        response_text = response.content[0].text
 
-    # Add assistant's response to session state
-    st.session_state.messages.append({"role": "assistant", "content": response.text})
-    # Display assistant's response in the chat interface
-    st.chat_message("assistant").write(response.text)
+        # Add assistant's response to session state
+        st.session_state.messages.append({"role": "assistant", "content": response_text})
+        # Display assistant's response in the chat interface
+        st.chat_message("assistant").write(response_text)
+        
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+        st.info("Please check your API key and try again.")
+        # Remove the user message if there was an error
+        st.session_state.messages.pop()
