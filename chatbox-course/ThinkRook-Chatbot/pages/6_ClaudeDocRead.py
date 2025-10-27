@@ -175,6 +175,10 @@ def create_rag_processor(uploaded_file, claude_api_key: str) -> Optional[FAISS]:
         
         # For embeddings, we'll use a simpler approach with sentence-transformers
         try:
+            from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+            embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        except ImportError:
+            # Fallback for older langchain versions
             from langchain_community.embeddings import HuggingFaceEmbeddings
             embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         except Exception as e:
